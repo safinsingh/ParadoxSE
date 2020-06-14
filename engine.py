@@ -9,6 +9,11 @@ from loader import Loader
 
 class ParadoxSE():
     def __init__(self, production=False):
+        """Initializing method for the ParadoxSE class
+
+        Args:
+            production (bool, optional): Whether to build for production or not. Defaults to False.
+        """
         self.apt = apt.Cache()
 
         self.vulns = []
