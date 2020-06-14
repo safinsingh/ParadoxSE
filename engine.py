@@ -1,16 +1,14 @@
-import yaml
 import os
 import subprocess
 import apt
 import pwd
 import grp
 import stat
+from loader import Loader
 
 
 class ParadoxSE():
-    def __init__(self):
-        self.data = {}
-
+    def __init__(self, production=False):
         self.apt = apt.Cache()
 
         self.vulns = []
@@ -19,9 +17,12 @@ class ParadoxSE():
         self.pen = []
         self.penpoints = []
 
-        with open("config.yml") as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
-        self.data = data
+        self.loader = Loader("config.yaml", production).load()
+
+        if production == False:
+            self.data = self.loader.parse()
+        else:
+            self.data = "PLACEHOLDER"
 
     def string_in_file(self, obj):
         if os.path.exists(obj[1]["file"]):
