@@ -1,0 +1,4 @@
+string_in_file:
+  - file: /home/cpadmin/Desktop/FQ1
+  - string: test
+  - points: 9
