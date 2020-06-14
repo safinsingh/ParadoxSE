@@ -39,3 +39,9 @@ service_up:
   - name: SSHD is up
   - service: sshd
   - points: 9
+
+file_perm_is:
+  - name: perm test
+  - file: /home/cpadmin/Desktop/FQ1
+  - perm: "0232"
+  - points: 9

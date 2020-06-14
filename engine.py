@@ -1,9 +1,10 @@
 import yaml
-from os import path
+import os
 import subprocess
 import apt
 import pwd
 import grp
+import stat
 
 
 class ParadoxSE():
@@ -22,13 +23,13 @@ class ParadoxSE():
         return self.data
 
     def string_in_file(self, obj):
-        if path.exists(obj[1]["file"]):
+        if os.path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] in f.read():
                     return obj[0]["name"], obj[3]["points"]
 
     def string_not_in_file(self, obj):
-        if path.exists(obj[1]["file"]):
+        if os.path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] not in f.read():
                     return obj[0]["name"], obj[3]["points"]
@@ -78,6 +79,11 @@ class ParadoxSE():
     def service_down(self, obj):
         if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") != "active":
             return obj[0]["name"], obj[2]["points"]
+
+    def file_perm_is(self, obj):
+        st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
+        if st == str(obj[2]["perm"]):
+            return obj[0]["name"], obj[3]["points"]
 
     def update(self):
         self.apt = apt.Cache()
