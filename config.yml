@@ -1,13 +1,16 @@
 string_in_file:
+  - name: FQ1 Correct
   - file: /home/cpadmin/Desktop/FQ1
   - string: test
   - points: 9
 
 string_not_in_file:
-  - file: /home/cpadmin/Desktop/FQ1
-  - string: test
+  - name: FQ2 Correct
+  - file: /home/cpadmin/Desktop/FQ2
+  - string: hello
   - points: 9
 
 package_installed:
+  - name: Nmap installed
   - package: nmap
   - points: 9
