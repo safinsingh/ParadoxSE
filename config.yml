@@ -3,45 +3,54 @@ string_in_file:
   - file: /home/cpadmin/Desktop/FQ1
   - string: test
   - points: 9
+  - penalty: False
 
 string_not_in_file:
   - name: FQ2 Correct
   - file: /home/cpadmin/Desktop/FQ2
   - string: hello
   - points: 9
+  - penalty: False
 
 package_installed:
   - name: Nmap installed
   - package: nmap
   - points: 9
+  - penalty: False
 
 firewall_up:
   - name: UFW enabled
   - points: 9
+  - penalty: False
 
 user_exists:
   - name: Cpadmin2 exists
   - user: cpadmin2
   - points: 9
+  - penalty: False
 
 group_exists:
   - name: group22 exists
   - group: group22
   - points: 9
+  - penalty: True
 
 user_in_group:
   - name: cpadmin2 in group22
   - user: cpadmin2
   - group: group22
   - points: 9
+  - penalty: True
 
 service_up:
   - name: SSHD is up
   - service: sshd
   - points: 9
+  - penalty: False
 
 file_perm_is:
   - name: perm test
   - file: /home/cpadmin/Desktop/FQ1
   - perm: "0232"
   - points: 9
+  - penalty: False

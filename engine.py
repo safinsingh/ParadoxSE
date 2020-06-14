@@ -10,9 +10,14 @@ import stat
 class ParadoxSE():
     def __init__(self):
         self.data = {}
+
         self.apt = apt.Cache()
+
         self.vulns = []
         self.points = []
+
+        self.pen = []
+        self.penpoints = []
 
         with open("config.yml") as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
@@ -92,15 +97,19 @@ class ParadoxSE():
         for func in self.data:
             res = getattr(self, func)(self.data[func])
             if res != None:
-                self.vulns.append(res[0])
-                self.points.append(res[1])
+                if not self.data[func][-1]["penalty"]:
+                    self.vulns.append(res[0])
+                    self.points.append(res[1])
+                elif self.data[func][-1]["penalty"]:
+                    self.pen.append(res[0])
+                    self.penpoints.append(-1 * res[1])
 
         print(self.points)
         print(self.vulns)
 
-        open("templates/report.html", "w").close()
+        open("report/report.html", "w").close()
 
-        with open("templates/report.html", "a") as f:
+        with open("report/report.html", "a") as f:
             f.write("""<!DOCTYPE html>
 <html>
     <head>
@@ -141,7 +150,7 @@ class ParadoxSE():
                 <div class="vulns">
                     <span id="vcont">
                         <h2>System Integrity Score: <scs>""")
-            f.write(str(sum(self.points)))
+            f.write(str(sum(self.points) + sum(self.penpoints)))
             f.write("""</scs></h2>
                         <div class="passed">
                             <h5>Checks <scs>Passed:</scs></h5>
@@ -157,10 +166,7 @@ class ParadoxSE():
                                     <ol>""")
 
             for el in self.points:
-                if el >= 1:
-                    el = "+" + str(el)
-                else:
-                    el = "-" + str(el)
+                el = "+" + str(el)
 
                 f.write("<li><scs>" + el + "</scs></li>")
 
@@ -174,14 +180,16 @@ class ParadoxSE():
                                 <div class="col-md-8">
                                     <ol>""")
 
-            ### TODO: ADD PENALTIES ###
+            for el in self.pen:
+                f.write("<li>" + el + "</li>")
 
             f.write("""</ol>
                                 </div>
                                 <div class="col-md-4 passvals">
                                     <ol>""")
 
-            ### TODO: ADD PENALTIES ###
+            for el in self.penpoints:
+                f.write("<li><fail>" + str(el) + "</fail></li>")
 
             f.write("""</ol>
                                 </div>
