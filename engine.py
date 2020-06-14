@@ -2,7 +2,6 @@ import yaml
 from os import path
 import subprocess
 import apt
-import pyufw as ufw
 
 
 class ParadoxSE():
@@ -41,7 +40,7 @@ class ParadoxSE():
             return obj[0]["name"], obj[2]["points"]
 
     def firewall_up(self, obj):
-        if ufw.status()["status"] == "active":
+        if "Status: active" in subprocess.getoutput("sudo ufw status | grep 'Status: active'"):
             return obj[0]["name"], obj[1]["points"]
 
     def update(self):
@@ -49,9 +48,9 @@ class ParadoxSE():
 
         for func in self.data:
             res = getattr(self, func)(self.data[func])
-
-            self.vulns.append(res[0])
-            self.points.append(res[1])
+            if res != None:
+                self.vulns.append(res[0])
+                self.points.append(res[1])
 
         print(self.points)
         print(self.vulns)
