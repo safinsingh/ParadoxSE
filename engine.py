@@ -23,31 +23,30 @@ class ParadoxSE():
         if path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] in f.read():
-                    self.vulns.append(obj[0]["name"])
-                    self.points.append(obj[3]["points"])
+                    return obj[0]["name"], obj[3]["points"]
 
     def string_not_in_file(self, obj):
         if path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] not in f.read():
-                    self.vulns.append(obj[0]["name"])
-                    self.points.append(obj[3]["points"])
+                    return obj[0]["name"], obj[3]["points"]
 
     def package_installed(self, obj):
         if self.apt[obj[1]["package"]].is_installed:
-            self.vulns.append(obj[0]["name"])
-            self.points.append(obj[2]["points"])
+            return obj[0]["name"], obj[2]["points"]
 
     def package_not_installed(self, obj):
         if not self.apt[obj[1]["package"]].is_installed:
-            self.vulns.append(obj[0]["name"])
-            self.points.append(obj[2]["points"])
+            return obj[0]["name"], obj[2]["points"]
 
     def update(self):
         self.apt = apt.Cache()
 
         for func in self.data:
-            getattr(self, func)(self.data[func])
+            res = getattr(self, func)(self.data[func])
+
+            self.vulns.append(res[0])
+            self.points.append(res[1])
 
         print(self.points)
         print(self.vulns)
