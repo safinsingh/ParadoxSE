@@ -14,3 +14,7 @@ package_installed:
   - name: Nmap installed
   - package: nmap
   - points: 9
+
+firewall_up:
+  - name: UFW enabled
+  - points: 9

@@ -2,6 +2,7 @@ import yaml
 from os import path
 import subprocess
 import apt
+import pyufw as ufw
 
 
 class ParadoxSE():
@@ -38,6 +39,10 @@ class ParadoxSE():
     def package_not_installed(self, obj):
         if not self.apt[obj[1]["package"]].is_installed:
             return obj[0]["name"], obj[2]["points"]
+
+    def firewall_up(self, obj):
+        if ufw.status()["status"] == "active":
+            return obj[0]["name"], obj[1]["points"]
 
     def update(self):
         self.apt = apt.Cache()
