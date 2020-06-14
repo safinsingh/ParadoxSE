@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   echo 'This script must be run as root'
    exit 1
 fi
 
@@ -16,14 +16,27 @@ echo """
                                                                          
 """
 
-cd /opt
+read -p "Are you sure you wish to continue? (yes/no)" res
+if [ "${res,,}" != "yes" ]; then
+   exit
+fi
 
-apt install git
-apt install python3-pip
+echo "* * * * * root /usr/bin/python3 /opt/ParadoxSE/worker.py" > /etc/crontab
 
-git clone https://github.com/safinsingh/ParadoxSE.git
-cd ParadoxSE
+echo """
+if [[ $EUID -ne 0 ]]; then
+   echo 'This script must be run as root'
+   exit 1
+fi
 
-pip3 install -r requirements.txt
+/usr/bin/python3 /opt/ParadoxSE/worker.py
+""" > /usr/local/bin/score
 
-echo "You can now configure scoring in the config.yml file"
+chmod +x /usr/local/bin/score
+
+if grep -Fxq "production=True" worker.py; then
+    read -p """You are running ParadoxSE in production mode. 
+    This means it will delete the config.yml file. Please back it up
+    and then press enter to proceed"""
+    rm -f config.yml
+fi
