@@ -1,5 +1,7 @@
 import yaml
 from os import path
+import subprocess
+import apt
 
 
 class ParadoxSE():
@@ -7,6 +9,7 @@ class ParadoxSE():
         self.config = config
         self.data = {}
         self.points = 0
+        self.apt = apt.Cache()
 
     def parse(self):
         with open(self.config) as f:
@@ -31,7 +34,19 @@ class ParadoxSE():
                 return 0
         return 0
 
+    def package_installed(self, obj):
+        if self.apt[obj[0]["package"]].is_installed:
+            return obj[1]["points"]
+        return 0
+
+    def package_installed(self, obj):
+        if not self.apt[obj[0]["package"]].is_installed:
+            return obj[1]["points"]
+        return 0
+
     def update(self):
+        self.apt = apt.Cache()
+
         for func in self.data:
             self.points += getattr(self, func)(self.data[func])
             print(self.points)

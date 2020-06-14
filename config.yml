@@ -2,3 +2,12 @@ string_in_file:
   - file: /home/cpadmin/Desktop/FQ1
   - string: test
   - points: 9
+
+string_not_in_file:
+  - file: /home/cpadmin/Desktop/FQ1
+  - string: test
+  - points: 9
+
+package_installed:
+  - package: nmap
+  - points: 9
