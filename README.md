@@ -2,6 +2,13 @@
 
 🔒 Live security competition scoring engine
 
+## 💡 Features
+
+-   Easy-to-use YAML configuration
+-   Extensive documentation
+-   Lightweight & easily readable
+-   Elegant and organized
+
 ## ✨ In Action
 
 ![Score Report](./img/ScoreReport.png)
