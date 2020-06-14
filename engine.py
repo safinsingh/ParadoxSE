@@ -66,6 +66,11 @@ class ParadoxSE():
             if obj[1]["user"] in grp.getgrnam(obj[2]["group"]).gr_mem:
                 return obj[0]["name"], obj[3]["points"]
 
+    def user_not_in_group(self, obj):
+        if self.group_exists([{"name": ""}, {"group": obj[2]["group"]}, {"points": 0}]) != None:
+            if obj[1]["user"] not in grp.getgrnam(obj[2]["group"]).gr_mem:
+                return obj[0]["name"], obj[3]["points"]
+
     def update(self):
         self.apt = apt.Cache()
 
