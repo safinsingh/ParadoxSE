@@ -23,6 +23,14 @@ class ParadoxSE():
                 return 0
         return 0
 
+    def string_not_in_file(self, obj):
+        if path.exists(obj[0]["file"]):
+            with open(obj[0]["file"]) as f:
+                if obj[1]["string"] not in f.read():
+                    return obj[2]["points"]
+                return 0
+        return 0
+
     def update(self):
         for func in self.data:
             self.points += getattr(self, func)(self.data[func])
