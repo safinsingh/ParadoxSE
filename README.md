@@ -1,1 +1,3 @@
-"# ParadoxSE" 
+# ParadoxSE
+
+![Score Report](./img/sr.png)
