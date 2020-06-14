@@ -49,12 +49,16 @@ class ParadoxSE():
         if obj[1]["user"] in [entry.pw_name for entry in pwd.getpwall()]:
             return obj[0]["name"], obj[2]["points"]
 
-    def user_doesnt_exists(self, obj):
+    def user_doesnt_exist(self, obj):
         if obj[1]["user"] not in [entry.pw_name for entry in pwd.getpwall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def group_exists(self, obj):
         if obj[1]["group"] in [entry.gr_name for entry in grp.getgrall()]:
+            return obj[0]["name"], obj[2]["points"]
+
+    def group_doesnt_exist(self, obj):
+        if obj[1]["group"] not in [entry.gr_name for entry in grp.getgrall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def update(self):
