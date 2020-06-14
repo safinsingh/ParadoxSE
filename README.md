@@ -1,3 +1,3 @@
 # ParadoxSE
 
-![Score Report](./img/sr.png)
+![Score Report](./img/ScoreReport.png)
