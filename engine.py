@@ -8,19 +8,15 @@ import stat
 
 
 class ParadoxSE():
-    def __init__(self, config):
-        self.config = config
+    def __init__(self):
         self.data = {}
         self.apt = apt.Cache()
         self.vulns = []
         self.points = []
 
-    def parse(self):
-        with open(self.config) as f:
+        with open("config.yml") as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
-
         self.data = data
-        return self.data
 
     def string_in_file(self, obj):
         if os.path.exists(obj[1]["file"]):
@@ -101,3 +97,100 @@ class ParadoxSE():
 
         print(self.points)
         print(self.vulns)
+
+        open("templates/report.html", "w").close()
+
+        with open("templates/report.html", "a") as f:
+            f.write("""<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vulnerability Analysis Report</title>
+
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+        />
+
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+
+        <link rel="stylesheet" href="../static/main.css" />
+        <!-- <link rel="stylesheet" href="../static/css/main.css" /> -->
+    </head>
+    <body>
+        <div class="root">
+            <div class="container">
+                <h1>ParadoxSE</h1>
+                <h3>Vulnerability Analysis Report</h3>
+                <hr />
+                <div class="vulns">
+                    <span id="vcont">
+                        <h2>System Integrity Score: <scs>""")
+            f.write(str(sum(self.points)))
+            f.write("""</scs></h2>
+                        <div class="passed">
+                            <h5>Checks <scs>Passed:</scs></h5>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <ol>""")
+            for el in self.vulns:
+                f.write("<li>" + el + "</li>")
+
+            f.write("""</ol>
+                                </div>
+                                <div class="col-md-4 passvals">
+                                    <ol>""")
+
+            for el in self.points:
+                if el >= 1:
+                    el = "+" + str(el)
+                else:
+                    el = "-" + str(el)
+
+                f.write("<li><scs>" + el + "</scs></li>")
+
+            f.write("""</ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="passed">
+                            <h5>Checks <fail>Failed:</fail></h5>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <ol>""")
+
+            ### TODO: ADD PENALTIES ###
+
+            f.write("""</ol>
+                                </div>
+                                <div class="col-md-4 passvals">
+                                    <ol>""")
+
+            ### TODO: ADD PENALTIES ###
+
+            f.write("""</ol>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+""")
