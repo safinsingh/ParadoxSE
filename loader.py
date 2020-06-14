@@ -3,10 +3,18 @@ import yaml
 
 class Loader():
     def __init__(self, file, production):
+        """Initialization function for loader
+
+        Args:
+            file (string): Name of the file to read configuration from
+            production (bool): Whether to build for production
+        """
         self.file = file
         self.production = production
 
     def load(self):
+        """Load and parse configuration file
+        """
         if not self.production:
             with open(self.file) as f:
                 data = yaml.load(f, Loader=yaml.FullLoader)
