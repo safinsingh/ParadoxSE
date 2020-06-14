@@ -18,6 +18,12 @@ package_installed:
   - points: 9
   - penalty: False
 
+package_not_installed:
+  - name: Netcat uninstalled
+  - package: nc-traditional
+  - points: 9
+  - penalty: False
+
 firewall_up:
   - name: UFW enabled
   - points: 9
@@ -28,10 +34,22 @@ user_exists:
   - user: cpadmin2
   - points: 9
   - penalty: False
+  
+user_doesnt_exist:
+  - name: Cpadmin3 doesnt exist
+  - user: cpadmin3
+  - points: 9
+  - penalty: False
 
 group_exists:
   - name: group22 exists
   - group: group22
+  - points: 9
+  - penalty: True
+
+group_doesnt_exist:
+  - name: group33 doesnt exist
+  - group: group3
   - points: 9
   - penalty: True
 
@@ -41,6 +59,13 @@ user_in_group:
   - group: group22
   - points: 9
   - penalty: True
+  
+user_not_in_group:
+  - name: cpadmin2 not in sudo
+  - user: cpadmin2
+  - group: sudo
+  - points: 9
+  - penalty: True
 
 service_up:
   - name: SSHD is up
@@ -48,9 +73,35 @@ service_up:
   - points: 9
   - penalty: False
 
-file_perm_is:
-  - name: perm test
-  - file: /home/cpadmin/Desktop/FQ1
-  - perm: "0232"
+service_down:
+  - name: PHP is down
+  - service: php7.0-fpm
   - points: 9
   - penalty: False
+
+file_perm_is:
+  - name: perm is
+  - file: /home/cpadmin/Desktop/FQ1
+  - perm: "0232" # IMPORTANT: Wrap perm value in quotes
+  - points: 9
+  - penalty: False
+
+file_perm_isnt:
+  - name: perm is not
+  - file: /home/cpadmin/Desktop/FQ#
+  - perm: "0242" # IMPORTANT: Wrap perm value in quotes
+  - points: 9
+  - penalty: False
+  
+command_succeeds:
+  - name: Command succeeding test
+  - command: cat /etc/group
+  - points: 9
+  - penalty: false
+  
+command_fails:
+- name: Command failing test
+- command: touch /etc/group.d/nano/not/a/real/path/hi.txt
+- points: 9
+- penalty: false
+
