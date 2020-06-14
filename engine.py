@@ -30,84 +30,222 @@ class ParadoxSE():
             self.data = "PLACEHOLDER"
 
     def string_in_file(self, obj):
+        """Checks if a string is present in a file
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if os.path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] in f.read():
                     return obj[0]["name"], obj[3]["points"]
 
     def string_not_in_file(self, obj):
+        """Checks if a string is not present in a file
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if os.path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] not in f.read():
                     return obj[0]["name"], obj[3]["points"]
 
     def package_installed(self, obj):
+        """Checks if a package is installed on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if self.apt[obj[1]["package"]].is_installed:
             return obj[0]["name"], obj[2]["points"]
 
     def package_not_installed(self, obj):
+        """Checks if a package is not installed on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if not self.apt[obj[1]["package"]].is_installed:
             return obj[0]["name"], obj[2]["points"]
 
     def firewall_up(self, obj):
+        """Checks if the firewall is running
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if "Status: active" in subprocess.getoutput("sudo ufw status | grep 'Status: active'"):
             return obj[0]["name"], obj[1]["points"]
 
     def user_exists(self, obj):
+        """Checks if a user exists on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if obj[1]["user"] in [entry.pw_name for entry in pwd.getpwall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def user_doesnt_exist(self, obj):
+        """Checks if a user does not exist on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if obj[1]["user"] not in [entry.pw_name for entry in pwd.getpwall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def group_exists(self, obj):
+        """Checks if a group exists on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if obj[1]["group"] in [entry.gr_name for entry in grp.getgrall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def group_doesnt_exist(self, obj):
+        """Checks if a group does not exist on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if obj[1]["group"] not in [entry.gr_name for entry in grp.getgrall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def user_in_group(self, obj):
+        """Checks if a user exists in the specified group
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if self.group_exists([{"name": ""}, {"group": obj[2]["group"]}, {"points": 0}]) != None:
             if obj[1]["user"] in grp.getgrnam(obj[2]["group"]).gr_mem:
                 return obj[0]["name"], obj[3]["points"]
 
     def user_not_in_group(self, obj):
+        """Checks if a user does not exist in the specified group
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if self.group_exists([{"name": ""}, {"group": obj[2]["group"]}, {"points": 0}]) != None:
             if obj[1]["user"] not in grp.getgrnam(obj[2]["group"]).gr_mem:
                 return obj[0]["name"], obj[3]["points"]
 
     def service_up(self, obj):
+        """Checks if a systemctl service is up on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") == "active":
             return obj[0]["name"], obj[2]["points"]
 
     def service_down(self, obj):
+        """Checks if a systemctl service is down on the system
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") != "active":
             return obj[0]["name"], obj[2]["points"]
 
     def file_perm_is(self, obj):
+        """Checks if the specified file has the specified octal permissions
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
         if st == str(obj[2]["perm"]):
             return obj[0]["name"], obj[3]["points"]
 
     def file_perm_isnt(self, obj):
+        """Checks if the specified file does not have the specified octal permissions
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
         if not st == str(obj[2]["perm"]):
             return obj[0]["name"], obj[3]["points"]
 
     def command_succeeds(self, obj):
+        """Checks if a command succeeds
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         code = subprocess.call(obj[1]["command"])
         if code == 0:
             return obj[0]["name"], obj[2]["points"]
 
     def command_fails(self, obj):
+        """Checks if a command fails
+
+        Args:
+            obj (array): Contains a list of dictionaries specific to each directive in the config YAML
+
+        Returns:
+            tuple: If successful, returns tuple containing name of vulnerability and point value
+        """
         code = subprocess.call(obj[1]["command"])
         if code != 0:
             return obj[0]["name"], obj[2]["points"]
 
     def update(self):
+        """Loops through all checks in YAML configuration and writes updates to Score Report
+        """
         self.apt = apt.Cache()
 
         for func in self.data:
