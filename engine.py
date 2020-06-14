@@ -91,6 +91,16 @@ class ParadoxSE():
         if not st == str(obj[2]["perm"]):
             return obj[0]["name"], obj[3]["points"]
 
+    def command_succeeds(self, obj):
+        code = subprocess.call(obj[1]["command"])
+        if code == 0:
+            return obj[0]["name"], obj[2]["points"]
+
+    def command_fails(self, obj):
+        code = subprocess.call(obj[1]["command"])
+        if code != 0:
+            return obj[0]["name"], obj[2]["points"]
+
     def update(self):
         self.apt = apt.Cache()
 
