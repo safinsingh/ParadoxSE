@@ -291,6 +291,8 @@ class ParadoxSE():
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"
         ></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
         <link rel="stylesheet" href="../static/main.css" />
         <!-- <link rel="stylesheet" href="../static/css/main.css" /> -->
@@ -298,10 +300,10 @@ class ParadoxSE():
     <body>
         <div class="root">
             <div class="container">
-                <h1>ParadoxSE</h1>
-                <h3>Vulnerability Analysis Report</h3>
-                <hr />
-                <div class="vulns">
+                <h1 data-aos="zoom-in">ParadoxSE</h1>
+                <h3 data-aos="zoom-in">Vulnerability Analysis Report</h3>
+                <hr data-aos="zoom-in" />
+                <div data-aos="zoom-in" class="vulns">
                     <span id="vcont">
                         <h2>System Integrity Score: <scs>""")
             f.write(str(sum(self.points) + sum(self.penpoints)))
@@ -353,6 +355,9 @@ class ParadoxSE():
                 </div>
             </div>
         </div>
+        <script>
+            AOS.init();
+        </script>
     </body>
 </html>
 """)
