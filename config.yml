@@ -28,3 +28,9 @@ group_exists:
   - name: group22 exists
   - group: group22
   - points: 9
+
+user_in_group:
+  - name: cpadmin2 in group22
+  - user: cpadmin2
+  - group: group22
+  - points: 9
