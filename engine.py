@@ -75,6 +75,10 @@ class ParadoxSE():
         if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") == "active":
             return obj[0]["name"], obj[2]["points"]
 
+    def service_down(self, obj):
+        if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") != "active":
+            return obj[0]["name"], obj[2]["points"]
+
     def update(self):
         self.apt = apt.Cache()
 
