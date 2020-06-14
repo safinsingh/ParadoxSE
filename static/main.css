@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+h1,
+h2 {
+    color: white;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h3 {
+    color: #d0f4ff;
+    font-size: 1.6rem;
+}
+
+body,
+html {
+    text-align: center;
+    background-color: #021526;
+}
+
+hr {
+    border-top: 2px solid #f1c232;
+    width: 80%;
+}
+
+* {
+    font-family: "Inter";
+}
+
+.vulns {
+    background-color: #3b4e60;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.passed {
+    text-align: left;
+    padding-left: 20px;
+}
+
+h5 {
+    color: white;
+    font-weight: 700;
+}
+
+scs {
+    color: #56ffaa;
+}
+
+fail {
+    color: #ff5c5c;
+}
+
+li {
+    color: white;
+}
+
+#vcont {
+    padding: 20px;
+}
+
+.root {
+    min-height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+}
+
+.passvals {
+    text-align: right;
+}
+
+.passvals ol {
+    padding-right: 30px;
+    list-style: none;
+}
+
+.passvals li {
+    font-weight: 700;
+    color: #56ffaa;
+}
