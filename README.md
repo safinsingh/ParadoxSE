@@ -1,6 +1,6 @@
 # ParadoxSE
 
-🔒 Live security competition scoring engine
+🔒 Live security competition scoring engine for `apt`-based systems
 
 ## 💡 Features
 
