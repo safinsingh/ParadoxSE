@@ -85,6 +85,11 @@ class ParadoxSE():
         if st == str(obj[2]["perm"]):
             return obj[0]["name"], obj[3]["points"]
 
+    def file_perm_isnt(self, obj):
+        st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
+        if not st == str(obj[2]["perm"]):
+            return obj[0]["name"], obj[3]["points"]
+
     def update(self):
         self.apt = apt.Cache()
 
