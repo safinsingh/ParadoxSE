@@ -30,7 +30,7 @@ echo "* * * * * root /usr/bin/python3 /opt/ParadoxSE/worker.py" > /etc/crontab
 
 echo """
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   echo 'This script must be run as root'
    exit 1
 fi
 
