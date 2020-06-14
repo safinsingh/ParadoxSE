@@ -23,3 +23,8 @@ user_exists:
   - name: Cpadmin2 exists
   - user: cpadmin2
   - points: 9
+
+group_exists:
+  - name: group22 exists
+  - group: group22
+  - points: 9

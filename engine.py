@@ -3,6 +3,7 @@ from os import path
 import subprocess
 import apt
 import pwd
+import grp
 
 
 class ParadoxSE():
@@ -50,6 +51,10 @@ class ParadoxSE():
 
     def user_doesnt_exists(self, obj):
         if obj[1]["user"] not in [entry.pw_name for entry in pwd.getpwall()]:
+            return obj[0]["name"], obj[2]["points"]
+
+    def group_exists(self, obj):
+        if obj[1]["group"] in [entry.gr_name for entry in grp.getgrall()]:
             return obj[0]["name"], obj[2]["points"]
 
     def update(self):
