@@ -34,3 +34,8 @@ user_in_group:
   - user: cpadmin2
   - group: group22
   - points: 9
+
+service_up:
+  - name: SSHD is up
+  - service: sshd
+  - points: 9

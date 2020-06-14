@@ -71,6 +71,10 @@ class ParadoxSE():
             if obj[1]["user"] not in grp.getgrnam(obj[2]["group"]).gr_mem:
                 return obj[0]["name"], obj[3]["points"]
 
+    def service_up(self, obj):
+        if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") == "active":
+            return obj[0]["name"], obj[2]["points"]
+
     def update(self):
         self.apt = apt.Cache()
 
