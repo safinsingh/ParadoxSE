@@ -2,6 +2,7 @@ import yaml
 from os import path
 import subprocess
 import apt
+import pwd
 
 
 class ParadoxSE():
@@ -42,6 +43,14 @@ class ParadoxSE():
     def firewall_up(self, obj):
         if "Status: active" in subprocess.getoutput("sudo ufw status | grep 'Status: active'"):
             return obj[0]["name"], obj[1]["points"]
+
+    def user_exists(self, obj):
+        if obj[1]["user"] in [entry.pw_name for entry in pwd.getpwall()]:
+            return obj[0]["name"], obj[2]["points"]
+
+    def user_doesnt_exists(self, obj):
+        if obj[1]["user"] not in [entry.pw_name for entry in pwd.getpwall()]:
+            return obj[0]["name"], obj[2]["points"]
 
     def update(self):
         self.apt = apt.Cache()

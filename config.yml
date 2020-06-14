@@ -18,3 +18,8 @@ package_installed:
 firewall_up:
   - name: UFW enabled
   - points: 9
+
+user_exists:
+  - name: Cpadmin2 exists
+  - user: cpadmin2
+  - points: 9
