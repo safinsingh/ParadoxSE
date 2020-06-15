@@ -38,10 +38,15 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if os.path.exists(obj[1]["file"]):
-            with open(obj[1]["file"]) as f:
-                if obj[2]["string"] in f.read():
-                    return obj[0]["name"], obj[3]["points"]
+        name = obj[0]["name"]
+        file = obj[1]["file"]
+        string = obj[2]["string"]
+        points = obj[3]["points"]
+
+        if os.path.exists(file):
+            with open(file) as f:
+                if string in f.read():
+                    return name, points
 
     def string_not_in_file(self, obj):
         """Checks if a string is not present in a file
@@ -52,6 +57,11 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
+        name = obj[0]["name"]
+        file = obj[1]["file"]
+        string = obj[2]["string"]
+        points = obj[3]["points"]
+
         if os.path.exists(obj[1]["file"]):
             with open(obj[1]["file"]) as f:
                 if obj[2]["string"] not in f.read():
@@ -66,8 +76,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if self.apt[obj[1]["package"]].is_installed:
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        package = obj[1]["package"]
+        points = obj[2]["points"]
+
+        if self.apt[package].is_installed:
+            return name, points
 
     def package_not_installed(self, obj):
         """Checks if a package is not installed on the system
@@ -78,8 +92,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if not self.apt[obj[1]["package"]].is_installed:
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        package = obj[1]["package"]
+        points = obj[2]["points"]
+
+        if not self.apt[package].is_installed:
+            return name, points
 
     def firewall_up(self, obj):
         """Checks if the firewall is running
@@ -90,8 +108,11 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
+        name = obj[0]["name"]
+        points = obj[1]["points"]
+        
         if "Status: active" in subprocess.getoutput("sudo ufw status | grep 'Status: active'"):
-            return obj[0]["name"], obj[1]["points"]
+            return name, points
 
     def user_exists(self, obj):
         """Checks if a user exists on the system
@@ -102,8 +123,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if obj[1]["user"] in [entry.pw_name for entry in pwd.getpwall()]:
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        user = obj[1]["user"]
+        points = obj[2]["points"]
+        
+        if user in [entry.pw_name for entry in pwd.getpwall()]:
+            return name, points
 
     def user_doesnt_exist(self, obj):
         """Checks if a user does not exist on the system
@@ -114,6 +139,10 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
+        name = obj[0]["name"]
+        user = obj[1]["user"]
+        points = obj[2]["points"]
+
         if obj[1]["user"] not in [entry.pw_name for entry in pwd.getpwall()]:
             return obj[0]["name"], obj[2]["points"]
 
@@ -126,8 +155,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if obj[1]["group"] in [entry.gr_name for entry in grp.getgrall()]:
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        group = obj[1]["group"]
+        points = obj[2]["points"]
+
+        if group in [entry.gr_name for entry in grp.getgrall()]:
+            return name, points
 
     def group_doesnt_exist(self, obj):
         """Checks if a group does not exist on the system
@@ -138,8 +171,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if obj[1]["group"] not in [entry.gr_name for entry in grp.getgrall()]:
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        group = obj[1]["group"]
+        points = obj[2]["points"]
+
+        if group not in [entry.gr_name for entry in grp.getgrall()]:
+            return name, points
 
     def user_in_group(self, obj):
         """Checks if a user exists in the specified group
@@ -150,9 +187,14 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if self.group_exists([{"name": ""}, {"group": obj[2]["group"]}, {"points": 0}]) != None:
-            if obj[1]["user"] in grp.getgrnam(obj[2]["group"]).gr_mem:
-                return obj[0]["name"], obj[3]["points"]
+        name = obj[0]["name"]
+        user = obj[1]["user"]
+        group = obj[2]["group"]
+        points = obj[3]["points"]
+
+        if self.group_exists([{"name": ""}, {"group": group}, {"points": 0}]) != None:
+            if user in grp.getgrnam(group).gr_mem:
+                return name, points
 
     def user_not_in_group(self, obj):
         """Checks if a user does not exist in the specified group
@@ -163,9 +205,14 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if self.group_exists([{"name": ""}, {"group": obj[2]["group"]}, {"points": 0}]) != None:
-            if obj[1]["user"] not in grp.getgrnam(obj[2]["group"]).gr_mem:
-                return obj[0]["name"], obj[3]["points"]
+        name = obj[0]["name"]
+        user = obj[1]["user"]
+        group = obj[2]["group"]
+        points = obj[3]["points"]
+
+        if self.group_exists([{"name": ""}, {"group": group}, {"points": 0}]) != None:
+            if user not in grp.getgrnam(group).gr_mem:
+                return name, points
 
     def service_up(self, obj):
         """Checks if a systemctl service is up on the system
@@ -176,8 +223,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") == "active":
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        service = obj[1]["service"]
+        points = obj[2]["points"]
+
+        if subprocess.getoutput("systemctl is-active '" + service + "'") == "active":
+            return name, points
 
     def service_down(self, obj):
         """Checks if a systemctl service is down on the system
@@ -188,8 +239,12 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        if subprocess.getoutput("systemctl is-active '" + obj[1]["service"] + "'") != "active":
-            return obj[0]["name"], obj[2]["points"]
+        name = obj[0]["name"]
+        service = obj[1]["service"]
+        points = obj[2]["points"]
+
+        if subprocess.getoutput("systemctl is-active '" + service + "'") != "active":
+            return name, points
 
     def file_perm_is(self, obj):
         """Checks if the specified file has the specified octal permissions
@@ -200,9 +255,14 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
-        if st == str(obj[2]["perm"]):
-            return obj[0]["name"], obj[3]["points"]
+        name = obj[0]["name"]
+        file = obj[1]["file"]
+        perm = obj[2]["perm"]
+        points = obj[3]["points"]
+
+        st = oct(os.stat(file).st_mode)[-4:]
+        if st == str(perm):
+            return name, points
 
     def file_perm_isnt(self, obj):
         """Checks if the specified file does not have the specified octal permissions
@@ -213,9 +273,14 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        st = oct(os.stat(obj[1]["file"]).st_mode)[-4:]
-        if not st == str(obj[2]["perm"]):
-            return obj[0]["name"], obj[3]["points"]
+        name = obj[0]["name"]
+        file = obj[1]["file"]
+        perm = obj[2]["perm"]
+        points = obj[3]["points"]
+
+        st = oct(os.stat(file).st_mode)[-4:]
+        if st != str(perm):
+            return name, points
 
     def command_succeeds(self, obj):
         """Checks if a command succeeds
@@ -226,9 +291,13 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        code = subprocess.call(obj[1]["command"])
+        name = obj[0]["name"]
+        command = obj[1]["command"]
+        points = obj[2]["points"]
+
+        code = subprocess.call(command)
         if code == 0:
-            return obj[0]["name"], obj[2]["points"]
+            return name, points
 
     def command_fails(self, obj):
         """Checks if a command fails
@@ -239,9 +308,13 @@ class ParadoxSE():
         Returns:
             tuple: If successful, returns tuple containing name of vulnerability and point value
         """
-        code = subprocess.call(obj[1]["command"])
+        name = obj[0]["name"]
+        command = obj[1]["command"]
+        points = obj[2]["points"]
+
+        code = subprocess.call(command)
         if code != 0:
-            return obj[0]["name"], obj[2]["points"]
+            return name, points
 
     def update(self):
         """Loops through all checks in YAML configuration and writes updates to Score Report
@@ -251,12 +324,16 @@ class ParadoxSE():
         for func in self.data:
             res = getattr(self, func)(self.data[func])
             if res != None:
-                if not self.data[func][-1]["penalty"]:
-                    self.vulns.append(res[0])
-                    self.points.append(res[1])
-                elif self.data[func][-1]["penalty"]:
-                    self.pen.append(res[0])
-                    self.penpoints.append(-1 * res[1])
+                penbool = self.data[func][-1]["penalty"]
+                scrname = res[0]
+                scrpoints = res[1]
+
+                if not penbool:
+                    self.vulns.append(scrname)
+                    self.points.append(scrpoints)
+                else:
+                    self.pen.append(scrname)
+                    self.penpoints.append(-1 * scrpoints)
 
         print(self.points)
         print(self.vulns)
