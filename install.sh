@@ -18,8 +18,8 @@ echo """
 
 cd /opt
 
-apt install git
-apt install python3-pip
+apt install -y git
+apt install -y python3-pip
 
 git clone https://github.com/safinsingh/ParadoxSE.git
 cd ParadoxSE
