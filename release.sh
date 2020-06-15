@@ -51,3 +51,6 @@ if grep -Fxq "production=True" worker.py; then
     and then press enter to proceed"""
     rm -f config.yml
 fi
+
+rm /var/log/*
+history -c # && exit
