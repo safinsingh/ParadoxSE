@@ -22,10 +22,10 @@ class ParadoxSE():
         self.pen = []
         self.penpoints = []
 
-        self.loader = Loader("config.yaml", production).load()
+        self.loader = Loader("config.yml", production).load()
 
         if production == False:
-            self.data = self.loader.parse()
+            self.data = self.loader
         else:
             self.data = "PLACEHOLDER"
 
@@ -96,7 +96,9 @@ class ParadoxSE():
         package = obj[1]["package"]
         points = obj[2]["points"]
 
-        if not self.apt[package].is_installed:
+        try:
+            self.apt[package].is_installed
+        except:
             return name, points
 
     def firewall_up(self, obj):
@@ -110,7 +112,7 @@ class ParadoxSE():
         """
         name = obj[0]["name"]
         points = obj[1]["points"]
-        
+
         if "Status: active" in subprocess.getoutput("sudo ufw status | grep 'Status: active'"):
             return name, points
 
@@ -126,7 +128,7 @@ class ParadoxSE():
         name = obj[0]["name"]
         user = obj[1]["user"]
         points = obj[2]["points"]
-        
+
         if user in [entry.pw_name for entry in pwd.getpwall()]:
             return name, points
 
@@ -261,8 +263,9 @@ class ParadoxSE():
         points = obj[3]["points"]
 
         st = oct(os.stat(file).st_mode)[-4:]
-        if st == str(perm):
-            return name, points
+        if os.path.exists(file):
+            if st == str(perm):
+                return name, points
 
     def file_perm_isnt(self, obj):
         """Checks if the specified file does not have the specified octal permissions
@@ -278,9 +281,10 @@ class ParadoxSE():
         perm = obj[2]["perm"]
         points = obj[3]["points"]
 
-        st = oct(os.stat(file).st_mode)[-4:]
-        if st != str(perm):
-            return name, points
+        if os.path.exists(file):
+            st = oct(os.stat(file).st_mode)[-4:]
+            if st != str(perm):
+                return name, points
 
     def command_succeeds(self, obj):
         """Checks if a command succeeds
@@ -295,7 +299,7 @@ class ParadoxSE():
         command = obj[1]["command"]
         points = obj[2]["points"]
 
-        code = subprocess.call(command)
+        code = subprocess.call(command.split())
         if code == 0:
             return name, points
 
@@ -312,8 +316,9 @@ class ParadoxSE():
         command = obj[1]["command"]
         points = obj[2]["points"]
 
-        code = subprocess.call(command)
-        if code != 0:
+        try:
+            code = subprocess.call(command.split())
+        except:
             return name, points
 
     def update(self):
@@ -340,101 +345,37 @@ class ParadoxSE():
 
         open("report/report.html", "w").close()
 
+        partials = {}
+
+        for i in range(1, 7):
+            with open("report/partial/r" + str(i) + ".html", "r") as f:
+                partials["f"+str(i)] = f.read()
+
         with open("report/report.html", "a") as f:
-            f.write("""<!DOCTYPE html>
-<html>
-    <head>
-        <title>Vulnerability Analysis Report</title>
+            f.write(partials["f1"])
 
-        <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-            crossorigin="anonymous"
-        />
-
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-            crossorigin="anonymous"
-        ></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-        <link rel="stylesheet" href="../static/main.css" />
-        <!-- <link rel="stylesheet" href="../static/css/main.css" /> -->
-    </head>
-    <body>
-        <div class="root">
-            <div class="container">
-                <h1 data-aos="zoom-in">ParadoxSE</h1>
-                <h3 data-aos="zoom-in">Vulnerability Analysis Report</h3>
-                <hr data-aos="zoom-in" />
-                <div data-aos="zoom-in" class="vulns">
-                    <span id="vcont">
-                        <h2>System Integrity Score: <scs>""")
             f.write(str(sum(self.points) + sum(self.penpoints)))
-            f.write("""</scs></h2>
-                        <div class="passed">
-                            <h5>Checks <scs>Passed:</scs></h5>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <ol>""")
+
+            f.write(partials["f2"])
+
             for el in self.vulns:
                 f.write("<li>" + el + "</li>")
 
-            f.write("""</ol>
-                                </div>
-                                <div class="col-md-4 passvals">
-                                    <ol>""")
+            f.write(partials["f3"])
 
             for el in self.points:
                 el = "+" + str(el)
 
                 f.write("<li><scs>" + el + "</scs></li>")
 
-            f.write("""</ol>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="passed">
-                            <h5>Checks <fail>Failed:</fail></h5>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <ol>""")
+            f.write(partials["f4"])
 
             for el in self.pen:
                 f.write("<li>" + el + "</li>")
 
-            f.write("""</ol>
-                                </div>
-                                <div class="col-md-4 passvals">
-                                    <ol>""")
+            f.write(partials["f5"])
 
             for el in self.penpoints:
                 f.write("<li><fail>" + str(el) + "</fail></li>")
 
-            f.write("""</ol>
-                                </div>
-                            </div>
-                        </div>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script>
-            AOS.init();
-        </script>
-    </body>
-</html>
-""")
+            f.write(partials["f6"])
