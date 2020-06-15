@@ -26,4 +26,15 @@ cd ParadoxSE
 
 pip3 install -r requirements.txt
 
+echo "Performing cleanup..."
+rm -rf /opt/ParadoxSE/docs/
+rm -rf /opt/ParadoxSE/img/
+rm -rf /opt/ParadoxSE/.gitattributes
+rm -rf /opt/ParadoxSE/.gitignore
+rm -rf /opt/ParadoxSE/.prettierignore
+rm -rf /opt/ParadoxSE/.gitattributes
+rm -rf /opt/ParadoxSE/install.sh
+rm -rf /opt/ParadoxSE/README.md
+rm -rf /opt/ParadoxSE/requirements.txt
+
 echo "You can now configure scoring in the config.yml file"
