@@ -1,14 +1,22 @@
 import os
 import subprocess
-import apt
 import pwd
 import grp
+
+useAPT = True
+
+try:
+    import apt
+except ImportError:
+    print("Failed to import APT, falling back to subprocess")
+    useAPT = False
 
 
 class Functions():
     def __init__(self):
         """Generate initial APT Cache for functions"""
-        self.apt = apt.Cache()
+        if useAPT:
+            self.apt = apt.Cache()
 
     def string_in_file(self, obj):
         """Checks if a string is present in a file
@@ -61,8 +69,14 @@ class Functions():
         package = obj[1]["package"]
         points = obj[2]["points"]
 
-        if self.apt[package].is_installed:
-            return name, points
+        if useAPT:
+            if self.apt[package].is_installed:
+                return name, points
+        else:
+            pkgs = subprocess.getoutput(
+                "dpkg --get-selections | awk '{print $1}'")
+            if package in pkgs:
+                return name, points
 
     def package_not_installed(self, obj):
         """Checks if a package is not installed on the system
@@ -78,9 +92,15 @@ class Functions():
         points = obj[2]["points"]
 
         try:
-            self.apt[package].is_installed
+            try:
+                self.apt[package].is_installed
+            except:
+                return name, points
         except:
-            return name, points
+            pkgs = subprocess.getoutput(
+                "dpkg --get-selections | awk '{print $1}'")
+            if package not in pkgs:
+                return name, points
 
     def firewall_up(self, obj):
         """Checks if the firewall is running
