@@ -8,7 +8,8 @@
 -   Extensive documentation
 -   Lightweight & easily readable
 -   Elegant and organized
--   Uses Python to directly interact directly with system rather that running OS commands (mostly)
+-   Uses Python to directly interact directly
+    with the system rather than running OS commands (mostly)
 
 ## ✨ In Action
 
