@@ -2,7 +2,6 @@ import argparse
 
 
 def parse_cli():
-
     """Parse CLI flags given by user
 
     Returns:

@@ -4,7 +4,6 @@ import os
 
 class Loader():
     def __init__(self, file, production):
-
         """Initialization function for loader
 
         Args:

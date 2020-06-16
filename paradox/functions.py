@@ -11,7 +11,6 @@ class Functions():
         self.apt = apt.Cache()
 
     def string_in_file(self, obj):
-
         """Checks if a string is present in a file
 
         Args:
@@ -31,7 +30,6 @@ class Functions():
                     return name, points
 
     def string_not_in_file(self, obj):
-
         """Checks if a string is not present in a file
 
         Args:
@@ -51,7 +49,6 @@ class Functions():
                     return name, points
 
     def package_installed(self, obj):
-
         """Checks if a package is installed on the system
 
         Args:
@@ -68,7 +65,6 @@ class Functions():
             return name, points
 
     def package_not_installed(self, obj):
-
         """Checks if a package is not installed on the system
 
         Args:
@@ -87,7 +83,6 @@ class Functions():
             return name, points
 
     def firewall_up(self, obj):
-
         """Checks if the firewall is running
 
         Args:
@@ -103,7 +98,6 @@ class Functions():
             return name, points
 
     def user_exists(self, obj):
-
         """Checks if a user exists on the system
 
         Args:
@@ -120,7 +114,6 @@ class Functions():
             return name, points
 
     def user_doesnt_exist(self, obj):
-        
         """Checks if a user does not exist on the system
 
         Args:
@@ -137,7 +130,6 @@ class Functions():
             return name, points
 
     def group_exists(self, obj):
-
         """Checks if a group exists on the system
 
         Args:
@@ -154,7 +146,6 @@ class Functions():
             return name, points
 
     def group_doesnt_exist(self, obj):
-
         """Checks if a group does not exist on the system
 
         Args:
@@ -171,7 +162,6 @@ class Functions():
             return name, points
 
     def user_in_group(self, obj):
-
         """Checks if a user exists in the specified group
 
         Args:
@@ -190,7 +180,6 @@ class Functions():
                 return name, points
 
     def user_not_in_group(self, obj):
-
         """Checks if a user does not exist in the specified group
 
         Args:
@@ -209,7 +198,6 @@ class Functions():
                 return name, points
 
     def service_up(self, obj):
-
         """Checks if a systemctl service is up on the system
 
         Args:
@@ -226,7 +214,6 @@ class Functions():
             return name, points
 
     def service_down(self, obj):
-
         """Checks if a systemctl service is down on the system
 
         Args:
@@ -243,7 +230,6 @@ class Functions():
             return name, points
 
     def file_perm_is(self, obj):
-
         """Checks if the specified file has the specified octal permissions
 
         Args:
@@ -263,7 +249,6 @@ class Functions():
                 return name, points
 
     def file_perm_isnt(self, obj):
-
         """Checks if the specified file does not have the specified octal permissions
 
         Args:
@@ -283,7 +268,6 @@ class Functions():
                 return name, points
 
     def command_succeeds(self, obj):
-
         """Checks if a command succeeds
 
         Args:
@@ -303,7 +287,6 @@ class Functions():
             return name, points
 
     def command_fails(self, obj):
-
         """Checks if a command fails
 
         Args:
@@ -324,7 +307,6 @@ class Functions():
             return name, points
 
     def update(self):
-        
         """Loops through all checks in YAML configuration and writes updates to Score Report"""
         self.apt = apt.Cache()
 
