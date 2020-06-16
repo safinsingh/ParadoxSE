@@ -1,4 +1,4 @@
-from paradox import *
+import paradox as pdx
 
-worker = ParadoxSE()
+worker = pdx.ParadoxSE()
 worker.update()
