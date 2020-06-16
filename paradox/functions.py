@@ -4,35 +4,11 @@ import apt
 import pwd
 import grp
 import stat
-from loader import Loader
 
 
-class ParadoxSE():
-    def __init__(self, production=False):
-        """Initializing method for the ParadoxSE class
-
-        Args:
-            production (bool, optional): Whether to build for production or not. Defaults to False.
-        """
+class Functions():
+    def __init__(self):
         self.apt = apt.Cache()
-
-        self.vulns = []
-        self.points = []
-
-        self.pen = []
-        self.penpoints = []
-
-        self.totalscore = 0
-
-        self.loader = Loader("config.yml", production).load()
-
-        if production == False:
-            self.data = self.loader
-        else:
-            self.data = "PLACEHOLDER"
-
-    def notify(self, data):
-        notification = subprocess.run(["notify-send", "ParadoxSE", data])
 
     def string_in_file(self, obj):
         """Checks if a string is present in a file
@@ -67,10 +43,10 @@ class ParadoxSE():
         string = obj[2]["string"]
         points = obj[3]["points"]
 
-        if os.path.exists(obj[1]["file"]):
-            with open(obj[1]["file"]) as f:
-                if obj[2]["string"] not in f.read():
-                    return obj[0]["name"], obj[3]["points"]
+        if os.path.exists(file):
+            with open(file) as f:
+                if string not in f.read():
+                    return name, points
 
     def package_installed(self, obj):
         """Checks if a package is installed on the system
@@ -353,19 +329,20 @@ class ParadoxSE():
 
         print("Your updated score is: " + str(self.totalscore))
 
-        # For verbose option, module overhaul coming soon!
-        # print("Checks Passed:\n" + '\n'.join(map(str, self.vulns)) + "\n")
-        # print("Checks Failed:\n" + '\n'.join(map(str, self.pen)))
+        if self.verbose:
+            print("Checks Passed:\n" + '\n'.join(map(str, self.vulns)) + "\n")
+            print("Checks Failed:\n" + '\n'.join(map(str, self.pen)))
 
-        open("report/report.html", "w").close()
+        open(os.path.join(os.path.dirname(__file__),
+                          "report/report.html"), "w").close()
 
         partials = {}
 
         for i in range(1, 7):
-            with open("report/partial/r" + str(i) + ".html", "r") as f:
+            with open(os.path.join(os.path.dirname(__file__), "report/partial/r" + str(i) + ".html"), "r") as f:
                 partials["f"+str(i)] = f.read()
 
-        with open("report/report.html", "a") as f:
+        with open(os.path.join(os.path.dirname(__file__), "report/report.html"), "a") as f:
             f.write(partials["f1"])
 
             f.write(str(sum(self.points) + sum(self.penpoints)))
@@ -394,7 +371,7 @@ class ParadoxSE():
 
             f.write(partials["f6"])
 
-        with open("misc/oldscore", "r") as f:
+        with open(os.path.join(os.path.dirname(__file__), "misc/oldscore"), "r") as f:
             oldscore = int(f.read())
 
             if self.totalscore > oldscore:
@@ -402,5 +379,5 @@ class ParadoxSE():
             elif self.totalscore < oldscore:
                 self.notify("You lost points!")
 
-        with open("misc/oldscore", "w") as f:
+        with open(os.path.join(os.path.dirname(__file__), "misc/oldscore"), "w") as f:
             f.write(str(self.totalscore))

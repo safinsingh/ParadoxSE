@@ -1,4 +1,5 @@
 import yaml
+import os
 
 
 class Loader():
@@ -9,7 +10,7 @@ class Loader():
             file (string): Name of the file to read configuration from
             production (bool): Whether to build for production
         """
-        self.file = file
+        self.file = os.path.join(os.path.dirname(__file__), "..", file)
         self.production = production
 
     def load(self):

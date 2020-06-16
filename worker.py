@@ -1,4 +1,4 @@
-from engine import ParadoxSE
+from paradox import *
 
 worker = ParadoxSE()
 worker.update()

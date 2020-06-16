@@ -12,7 +12,7 @@
 
 ## ✨ In Action
 
-![Score Report](./img/ScoreReport.png)
+![Score Report](./docs/ScoreReport.png)
 
 ## 💻 Try it out
 
