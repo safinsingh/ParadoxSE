@@ -4,7 +4,7 @@ import os
 
 class Loader():
     def __init__(self, file, production):
-        
+
         """Initialization function for loader
 
         Args:
@@ -18,7 +18,7 @@ class Loader():
         """Load and parse configuration file"""
         if not self.production:
             with open(self.file) as f:
-                data = yaml.load(f, Loader=yaml.FullLoader)
+                data = yaml.safe_load(f, Loader=yaml.FullLoader)
         else:
             data = self.parse()
 
