@@ -10,7 +10,6 @@ class ParadoxSE(Functions):
         Args:
             production (bool, optional): Whether to build for production or not. Defaults to False.
         """
-
         self.verbose = vars(parse_cli())["verbose"]
 
         self.vulns = []

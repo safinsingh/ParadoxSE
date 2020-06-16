@@ -2,6 +2,12 @@ import argparse
 
 
 def parse_cli():
+
+    """Parse CLI flags given by user
+
+    Returns:
+        argparse.Namespace: Namespace containing user-supplied arguments
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-v", "--verbose",

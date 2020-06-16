@@ -5,9 +5,13 @@
 ## 💡 Features
 
 -   Easy-to-use YAML configuration
+
 -   Extensive documentation
+
 -   Lightweight & easily readable
+
 -   Elegant and organized
+
 -   Uses Python to directly interact directly
     with the system rather than running OS commands (mostly)
 

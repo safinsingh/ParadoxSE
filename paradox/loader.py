@@ -4,6 +4,7 @@ import os
 
 class Loader():
     def __init__(self, file, production):
+        
         """Initialization function for loader
 
         Args:
@@ -14,8 +15,7 @@ class Loader():
         self.production = False  # for future releases (currently deprecated)
 
     def load(self):
-        """Load and parse configuration file
-        """
+        """Load and parse configuration file"""
         if not self.production:
             with open(self.file) as f:
                 data = yaml.load(f, Loader=yaml.FullLoader)
