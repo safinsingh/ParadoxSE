@@ -11,7 +11,7 @@ class Loader():
             production (bool): Whether to build for production
         """
         self.file = os.path.join(os.path.dirname(__file__), "..", file)
-        self.production = production
+        self.production = False  # deprecate support for now
 
     def load(self):
         """Load and parse configuration file
