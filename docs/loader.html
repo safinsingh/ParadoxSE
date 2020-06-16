@@ -37,14 +37,13 @@ class Loader():
             production (bool): Whether to build for production
         &#34;&#34;&#34;
         self.file = os.path.join(os.path.dirname(__file__), &#34;..&#34;, file)
-        self.production = production
+        self.production = False  # for future releases (currently deprecated)
 
     def load(self):
-        &#34;&#34;&#34;Load and parse configuration file
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;Load and parse configuration file&#34;&#34;&#34;
         if not self.production:
             with open(self.file) as f:
-                data = yaml.load(f, Loader=yaml.FullLoader)
+                data = yaml.safe_load(f, Loader=yaml.FullLoader)
         else:
             data = self.parse()
 
@@ -94,14 +93,13 @@ class Loader():
             production (bool): Whether to build for production
         &#34;&#34;&#34;
         self.file = os.path.join(os.path.dirname(__file__), &#34;..&#34;, file)
-        self.production = production
+        self.production = False  # for future releases (currently deprecated)
 
     def load(self):
-        &#34;&#34;&#34;Load and parse configuration file
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;Load and parse configuration file&#34;&#34;&#34;
         if not self.production:
             with open(self.file) as f:
-                data = yaml.load(f, Loader=yaml.FullLoader)
+                data = yaml.safe_load(f, Loader=yaml.FullLoader)
         else:
             data = self.parse()
 
@@ -127,11 +125,10 @@ class Loader():
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load(self):
-    &#34;&#34;&#34;Load and parse configuration file
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Load and parse configuration file&#34;&#34;&#34;
     if not self.production:
         with open(self.file) as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
+            data = yaml.safe_load(f, Loader=yaml.FullLoader)
     else:
         data = self.parse()
 

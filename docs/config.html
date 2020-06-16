@@ -28,6 +28,11 @@
 
 
 def parse_cli():
+    &#34;&#34;&#34;Parse CLI flags given by user
+
+    Returns:
+        argparse.Namespace: Namespace containing user-supplied arguments
+    &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
     parser.add_argument(
         &#34;-v&#34;, &#34;--verbose&#34;,
@@ -48,12 +53,22 @@ def parse_cli():
 <span>def <span class="ident">parse_cli</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Parse CLI flags given by user</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>argparse.Namespace</code></dt>
+<dd>Namespace containing user-supplied arguments</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def parse_cli():
+    &#34;&#34;&#34;Parse CLI flags given by user
+
+    Returns:
+        argparse.Namespace: Namespace containing user-supplied arguments
+    &#34;&#34;&#34;
     parser = argparse.ArgumentParser()
     parser.add_argument(
         &#34;-v&#34;, &#34;--verbose&#34;,
