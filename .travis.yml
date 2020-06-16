@@ -7,7 +7,7 @@ install:
   - pip install pdoc3
   - rm -rf docs
   - pdoc --html paradox -o docs
-  - cp -Rf docs/paradox/* docs/*
+  - find . -type f -print -exec mv {} . \;
   - rm -rf docs/paradox
   - git config --global user.email "safin.singh@gmail.com"
   - git config --global user.name "Safin Singh"
