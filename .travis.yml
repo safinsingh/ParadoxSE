@@ -2,18 +2,20 @@ os: linux
 dist: xenial
 language: python
 install:
+  - git init
+  - git remote add origin https://safinsingh:${GH_TOKEN}@github.com/safinsingh/ParadoxSE.git > /dev/null 2>&1
+  - git pull
   - pip install -r requirements.txt
   - sudo apt-get install --reinstall python3-apt
   - pip install pdoc3
   - rm -rf docs
   - pdoc --html paradox -o docs
-  - find . -type f -print -exec mv {} . \;
+  - find docs -type f -print -exec mv {} . \;
   - rm -rf docs/paradox
   - git config --global user.email "safin.singh@gmail.com"
   - git config --global user.name "Safin Singh"
   - git add docs
   - git commit -m "auto regen docs (travis)"
-  - git remote add origin https://safinsingh:${GH_TOKEN}@github.com/safinsingh/ParadoxSE.git > /dev/null 2>&1
   - git push origin master --quiet
 
 env:
