@@ -22,12 +22,17 @@ class ParadoxSE():
         self.pen = []
         self.penpoints = []
 
+        self.totalscore = 0
+
         self.loader = Loader("config.yml", production).load()
 
         if production == False:
             self.data = self.loader
         else:
             self.data = "PLACEHOLDER"
+
+    def notify(self, data):
+        notification = subprocess.run(["notify-send", "ParadoxSE", data])
 
     def string_in_file(self, obj):
         """Checks if a string is present in a file
@@ -299,7 +304,9 @@ class ParadoxSE():
         command = obj[1]["command"]
         points = obj[2]["points"]
 
-        code = subprocess.call(command.split())
+        with open(os.devnull, 'w') as FNULL:
+            code = subprocess.call(
+                command.split(), stdout=FNULL, stderr=subprocess.STDOUT)
         if code == 0:
             return name, points
 
@@ -317,7 +324,9 @@ class ParadoxSE():
         points = obj[2]["points"]
 
         try:
-            code = subprocess.call(command.split())
+            with open(os.devnull, 'w') as FNULL:
+                code = subprocess.call(
+                    command.split(), stdout=FNULL, stderr=subprocess.STDOUT)
         except:
             return name, points
 
@@ -340,8 +349,13 @@ class ParadoxSE():
                     self.pen.append(scrname)
                     self.penpoints.append(-1 * scrpoints)
 
-        print(self.points)
-        print(self.vulns)
+        self.totalscore = sum(self.points) + sum(self.penpoints)
+
+        print("Your updated score is: " + str(self.totalscore))
+
+        # For verbose option, module overhaul coming soon!
+        # print("Checks Passed:\n" + '\n'.join(map(str, self.vulns)) + "\n")
+        # print("Checks Failed:\n" + '\n'.join(map(str, self.pen)))
 
         open("report/report.html", "w").close()
 
@@ -379,3 +393,14 @@ class ParadoxSE():
                 f.write("<li><fail>" + str(el) + "</fail></li>")
 
             f.write(partials["f6"])
+
+        with open("misc/oldscore", "r") as f:
+            oldscore = int(f.read())
+
+            if self.totalscore > oldscore:
+                self.notify("You gained points!")
+            elif self.totalscore < oldscore:
+                self.notify("You lost points!")
+
+        with open("misc/oldscore", "w") as f:
+            f.write(str(self.totalscore))
