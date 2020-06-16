@@ -1,0 +1,17 @@
+os: linux
+dist: xenial
+language: python
+python: "3.5"
+install:
+  - pip install -r requirements.txt
+  - pip install pdoc3
+  - rm -rf docs
+  - pdoc --html paradox -o docs
+  - mv docs/paradox/* docs/*
+  - rm -rf docs/paradox
+  - git config --global user.email "safin.singh@gmail.com"
+  - git config --global user.name "Safin Singh"
+  - git add docs
+  - git commit -m "auto regen docs (travis)"
+  - git remote add origin https://safinsingh:${GH_TOKEN}@github.com/safinsingh/ParadoxSE.git > /dev/null 2>&1
+  - git push origin master --quiet
